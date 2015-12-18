@@ -62,25 +62,6 @@ using namespace std;
           new2DArray = 0;
           printf("Ready.\n");
 
-          //random variables
-          	std::default_random_engine generator;
-          	std::normal_distribution<double> distribution(0.0, 0.2);
-
-          	//declare variables
-          	const int dim_time = 10;
-          	double dat[10][dim_time];
-          	int i=0, j=0;
-
-          	//create fake data
-          	for(i = 0; i<10; i++){
-          		for(j=0; j<dim_time; j++){
-          			dat[i][j] = distribution(generator);
-          			cout << sin( 2.0*PI*j/dim_time) + dat[i][j];
-          		}
-               cout <<endl;
-          	}
-          	return 0;
-
       return 0;
     }
 
