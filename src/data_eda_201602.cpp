@@ -59,10 +59,13 @@ using namespace std;
       //quaternion
       
 
-      double** newdat = create2DArray(height, 5);
-      quaternion_transformation(my2DArray, newdat, height);
-      printmat(newdat, height, 5);
+      double** quat = create2DArray(height, 5);
+      quaternion_transformation(my2DArray, quat, height);
+      printmat(quat, height, 5);
 
+      double** newdat = create2DArray(height, 4);
+      euler_transformation(quat, newdat, height);
+      printmat(newdat, height, 4);
        //printmat(dat, 10, 10);
       
       /*
@@ -87,7 +90,8 @@ using namespace std;
       */
 
         delete2DArray(my2DArray, height, width);
-	      delete2DArray(newdat, height, width);
+	      delete2DArray(quat, height, width);
+        delete2DArray(newdat, height, width);
  
 
      

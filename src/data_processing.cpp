@@ -1,6 +1,7 @@
  // Returns a pointer to a newly created 2d array the array2D has size [height x width]
 #include "data_processing.h"
 #include "MadgwickAHRS.h"
+#include <math.h>
 #include <cstdio>
 
     double** create2DArray(unsigned height, unsigned width)
@@ -76,14 +77,31 @@
       
       for(int i=0; i<height; i++){
            newarray[i][0] = raw[i][0]; //keep time 
-           val = MadgwickAHRSupdate(raw[i][1],raw[i][2],raw[i][3],
-                                    raw[i][4],raw[i][5],raw[i][6],
+           val = MadgwickAHRSupdate(raw[i][4],raw[i][5],raw[i][6],
+                                    raw[i][1],raw[i][2],raw[i][3],
                                     raw[i][7],raw[i][8],raw[i][9]);
            newarray[i][1] = val[0]; 
            newarray[i][2] = val[1]; 
            newarray[i][3] = val[2];
            newarray[i][4] = val[3];
        }
+       return;
+    }
+
+
+    void euler_transformation(double** quat, double** newarray, unsigned height){
+      //input: T x 10 raw data (time, 9 axis) 
+      //output: T x 5 transformed data (time, 4 axis)
+     
+      for(int i=0; i<height; i++){
+           newarray[i][0] = quat[i][0];
+           newarray[i][1] = atan2(2.0*(quat[i][1]*quat[i][2]+quat[i][3]*quat[i][4]), 
+                                  1.0-2.0*(pow(quat[i][2],2)+pow(quat[i][3],2)));
+           newarray[i][2] = asin(2*(quat[i][1]*quat[i][3]-
+                                    quat[i][4]*quat[i][2]));
+           newarray[i][3] = atan2(2.0*(quat[i][1]*quat[i][4]+quat[i][2]*quat[i][3]), 
+                                  1.0-2.0*(pow(quat[i][3],2)+pow(quat[i][4],3)));
+          }
        return;
     }
 
